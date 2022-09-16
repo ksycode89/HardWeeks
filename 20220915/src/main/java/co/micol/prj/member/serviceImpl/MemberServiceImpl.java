@@ -48,15 +48,18 @@ public class MemberServiceImpl implements MemberService  {
 
 	@Override
 	public MemberVO memberSelect(MemberVO vo) {
-		MemberVO mv = new MemberVO();
+		MemberVO mv =null;
+		System.out.println("memverimpl= "+vo.getMemberId());
 		try {
 			String sql = "SELECT * FROM MEMBER WHERE member_id= ?";
-			pstm.setString(1, vo.getMemberId());
 			pstm = dao.conn.prepareStatement(sql);
+			pstm.setString(1, vo.getMemberId());
 			rs = pstm.executeQuery();
-
+			System.out.println(pstm);
+			
+			
 			while (rs.next()) {
-
+				mv = new MemberVO();
 				mv.setMemberId(rs.getString("member_id"));
 				mv.setMemberName(rs.getString("member_name"));
 				mv.setMemberPassword(rs.getString("Member_Password"));
@@ -88,10 +91,10 @@ public class MemberServiceImpl implements MemberService  {
 		
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} finally {  
 			disconnect();
 		}
-
+		
 		return result;
 	}
 
@@ -157,7 +160,7 @@ public class MemberServiceImpl implements MemberService  {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+				e.printStackTrace();
 		}
 		return check;
 	}

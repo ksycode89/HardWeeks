@@ -11,11 +11,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.taglibs.standard.lang.jstl.EqualsOperator;
+
 import co.micol.prj.common.Command;
+import co.micol.prj.member.command.IsMemberId;
 import co.micol.prj.member.command.MemberInsert;
 import co.micol.prj.member.command.MemberInsert2;
 import co.micol.prj.member.command.MemberSelect;
 import co.micol.prj.member.command.MemberSelectList;
+import co.micol.prj.member.service.MemberService;
+import co.micol.prj.member.serviceImpl.MemberServiceImpl;
 
 /**
  * Servlet implementation class FrontController
@@ -36,15 +41,39 @@ public class FrontController extends HttpServlet {
 		//등록하는곳
 		map.put("/main.do",new MainCommand());
 		map.put("/memberSelectList.do",new MemberSelectList());
-		map.put("/memberSelect.do",new MemberSelect());
+		map.put("/MemberSelect.do",new MemberSelect());
 		map.put("/memberInsert.do",new MemberInsert());
 		map.put("/memberInsert2.do", new MemberInsert2());
+		map.put("/isMemberId.do", new IsMemberId() );
+		
 	}
-
+	
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 		request.setCharacterEncoding("utf-8");
+		
+		String idCheck = request.getParameter("do");
+		
+		if("do".equals(idCheck)) {
+			MemberService dao = new MemberServiceImpl();
+			String id =request.getParameter("memberId");
+			boolean result = dao.isMemberId(id);
+			try {
+				sop
+				if(result) {
+//					 request.setAttribute("result", "can");
+					response.getWriter().print("Can using");
+				}else {
+//					request.setAttribute("result", "cant");
+					response.getWriter().print("Already Using");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+		}
 		
 		String uri = request.getRequestURI(); //도메인 모양 
 		String contextPath = request.getContextPath();//Path
@@ -68,6 +97,10 @@ public class FrontController extends HttpServlet {
 		}else {
 			response.sendRedirect(viewPage);
 		}
+		
+		
+		
+		
 	}
 
 

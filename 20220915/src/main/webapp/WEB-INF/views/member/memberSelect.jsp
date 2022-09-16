@@ -9,7 +9,7 @@
 <body>
 
 아이디 : ${member.memberId };
-이름 : ${member.memberName };
+이름 :  ${member.memberName };
 
 </body>
 </html>
